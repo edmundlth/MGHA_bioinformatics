@@ -10,7 +10,7 @@ setup(name="MGHA_bioinformatics",
       package_dir={
         "anonymise_fastq" : "anonymise_fastq", 
         "vcf_features" : "vcf_features"},
-      package_data={"vcf_features" : ["vcf_features/template_report.html"]},
+      package_data={"vcf_features" : ["template_report.html"]},
       entry_points={
              "console_scripts":[
                "anonymise_fastq = anonymise_fastq.main:main", 

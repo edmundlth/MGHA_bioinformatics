@@ -78,5 +78,5 @@ $ vcf_features \
     Class3 \
 
 
-! open analysis_output/report.html
+$ open analysis_output/report.html
 ```

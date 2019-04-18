@@ -6,12 +6,18 @@ import argparse
 
 import pandas as pd
 import numpy as np
+
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt 
 from mpl_toolkits.mplot3d import Axes3D
 from sklearn.decomposition import PCA
 
 
 from .vcf_features import gene_variants, vcf_to_df, build_chrom_interval_tree, get_genotype
+
+
+
 
 
 def main():
@@ -112,7 +118,6 @@ def argparser():
                              "DO NOT input gVCF.")
     parser.add_argument("--bed", metavar="FILENAME", 
                         type=str, 
-#                        nargs=1,
                         required=True,
                         help="A BED file specifying genomic regions of interest."
                              "The file can be gzipped. "
@@ -127,7 +132,6 @@ def argparser():
                              "Default: None")
     parser.add_argument("--outdir", metavar="DIR", 
                         type=str, 
-                        nargs=1,
                         default="./analysis_output/", 
                         help="Output directory. Default to './analysis_output/'.")
     return parser
@@ -150,20 +154,20 @@ def plot_pca(X_reduced, y, n_dim=2, figsize=(10, 10)):
     n_classes = len(set(y))
     for index, label, color in zip(range(n_classes), 
                                set(y), 
-                               plt.cm.hot_r(np.linspace(0, 1, num=n_classes))):   
+                               plt.cm.Set1(np.linspace(0, 1, num=n_classes))):   
         row_index = y.index[y == label]
         if n_dim == 3:
             ax.scatter(X_reduced[row_index, 0], 
                        X_reduced[row_index, 1], 
                        X_reduced[row_index, 2], 
-                       c=color,
+                       color=color,
                        label=label,
                        s=40)
             ax.set_zlabel("PC3")
         elif n_dim == 2:
             ax.scatter(X_reduced[row_index, 0], 
                        X_reduced[row_index, 1], 
-                       c=color,
+                       color=color,
                        label=label,
                        s=40)
     ax.set_title("First %i Principal Components" % n_dim)
@@ -188,7 +192,10 @@ def write_report(output_record):
     "fig_pca2d"             : """<img src="%s" alt="2D PCA plot">""" % output_record["load_pca2d_filename"],
     "fig_pca3d"             : """<img src="%s" alt="3D PCA plot">""" % output_record["load_pca3d_filename"],
     }
-    with open("./template_report.html", 'r') as infile:
+
+    this_dir, this_filename = os.path.split(__file__)
+    template_path = os.path.join(this_dir, "template_report.html")
+    with open(template_path, 'r') as infile:
         template = infile.read()
         output = template.format(**formating_data)
     return output
