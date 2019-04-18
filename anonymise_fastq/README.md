@@ -28,15 +28,6 @@ We will use Python `memory_profiling` package to trace memory usage to make sure
 
 
 
-
-
-----
-# Install
-----
-1. Run `$ git clone https://github.com/edmundlth/MGHA_bioinformatics`. 
-2. Run `$ pip install MGHA_bioinformatics/anonymise_fastq`. 
-3. See `$ anonymise_fastq --help` for input options. 
-
 ----
 # Example run
 ----
